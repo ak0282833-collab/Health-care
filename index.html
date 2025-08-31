@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -48,8 +48,6 @@
       margin-top: 10px;
     }
     button:hover { background: #218838; }
-
-    /* Dark Mode */
     .dark-mode { background: #121212; color: #eee; }
     .dark-mode .card { background: #1e1e1e; color: #eee; }
     .dark-mode header { background: #222; }
@@ -64,7 +62,7 @@
 </header>
 
 <div class="dashboard">
-  
+
   <!-- BMI Calculator -->
   <div class="card">
     <h2>BMI Calculator</h2>
@@ -74,77 +72,12 @@
     <p id="bmiResult"></p>
   </div>
 
-  <!DOCTYPE html>
-<html>
-<head>
-  <title>Google Fit Step Counter</title>
-</head>
-<body>
-  <h2>Google Fit Step Counter</h2>
-  <button onclick="connectGoogleFit()">🔑 Connect Google Fit</button>
-
-  <!-- Load Google API -->
-  <script src="https://apis.google.com/js/api.js"></script>
-
-  <script>
-    // Google API load
-    function handleClientLoad() {
-      gapi.load('client:auth2', initClient);
-    }
-
-    // Init Google API client
-    function initClient() {
-      gapi.client.init({
-        clientId: https://522556553434-c3gfrfbnegvo3lgts70a8kuio6q4562r.apps.googleusercontent.com
-        discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/fitness/v1/rest"],
-        scope: "https://www.googleapis.com/auth/fitness.activity.read"
-      }).then(function () {
-        console.log("Google API client ready ✅");
-      });
-    }
-
-    // Sign in with Google
-    function connectGoogleFit() {
-      gapi.auth2.getAuthInstance().signIn().then(function() {
-        console.log("User signed in ✅");
-        getStepCount();
-      });
-    }
-
-    // Fetch step count (last 24 hours)
-    function getStepCount() {
-      const now = new Date();
-      const oneDayAgo = new Date(now.getTime() - (24 * 60 * 60 * 1000));
-
-      gapi.client.fitness.users.dataset.aggregate({
-        userId: "me",
-        requestBody: {
-          aggregateBy: [{
-            dataTypeName: "com.google.step_count.delta",
-            dataSourceId: "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps"
-          }],
-          bucketByTime: { durationMillis: 86400000 },
-          startTimeMillis: oneDayAgo.getTime(),
-          endTimeMillis: now.getTime()
-        }
-      }).then(function(response) {
-        const stepCount = response.result.bucket[0].dataset[0].point
-          .reduce((sum, point) => sum + (point.value[0].intVal || 0), 0);
-
-        alert("Steps in last 24h: " + stepCount);
-      }, function(error) {
-        console.error("Error fetching step count:", error);
-        alert("Error: " + error.result.error.message);
-      });
-    }
-  </script>
-
-  <!-- Load client library -->
-  <script async defer 
-          src="https://apis.google.com/js/api.js" 
-          onload="handleClientLoad()"></script>
-</body>
-</html>
+  <!-- Google Fit Step Counter -->
+  <div class="card">
+    <h2>Google Fit Step Counter</h2>
+    <button onclick="authenticate()">🔑 Connect Google Fit</button>
+    <p id="steps">🚶‍♂️ Not Connected</p>
+  </div>
 
   <!-- Water Intake -->
   <div class="card">
@@ -158,10 +91,11 @@
     <h2>Daily Health Tip</h2>
     <p id="tip"></p>
   </div>
+
 </div>
 
 <script>
-  // BMI Calculator
+  // ---------------- BMI Calculator ----------------
   function calculateBMI() {
     let h = document.getElementById("height").value;
     let w = document.getElementById("weight").value;
@@ -173,14 +107,14 @@
     }
   }
 
-  // Water Intake
+  // ---------------- Water Intake ----------------
   let glasses = 0;
   function addWater() {
     glasses++;
     document.getElementById("water").innerText = glasses + " Glass";
   }
 
-  // Daily Tips
+  // ---------------- Daily Tips ----------------
   const tips = [
     "Drink 8 glasses of water daily.",
     "Walk at least 30 minutes a day.",
@@ -190,7 +124,7 @@
   ];
   document.getElementById("tip").innerText = tips[Math.floor(Math.random() * tips.length)];
 
-  // Dark Mode Toggle
+  // ---------------- Dark Mode ----------------
   function toggleMode() {
     document.body.classList.toggle("dark-mode");
     let btn = document.querySelector(".toggle-btn");
@@ -202,7 +136,7 @@
   }
 
   // ---------------- Google Fit Integration ----------------
-  const CLIENT_ID = 522556553434-c3gfrfbnegvo3lgts70a8kuio6q4562r.apps.googleusercontent.com
+  const CLIENT_ID = ""; // <-- apna Client ID daalo
   const SCOPES = "https://www.googleapis.com/auth/fitness.activity.read";
 
   function authenticate() {
@@ -220,6 +154,7 @@
   async function fetchSteps(token) {
     let endTime = Date.now();
     let startTime = endTime - (24 * 60 * 60 * 1000); // last 24 hours
+
     let body = {
       aggregateBy: [{ dataTypeName: "com.google.step_count.delta" }],
       bucketByTime: { durationMillis: 86400000 },
@@ -249,4 +184,4 @@
 </script>
 
 </body>
-</html>
+      </html>
